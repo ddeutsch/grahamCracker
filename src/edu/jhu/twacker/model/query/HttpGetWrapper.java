@@ -5,7 +5,6 @@
 package edu.jhu.twacker.model.query;
 
 import java.io.IOException;
-import java.io.InputStream;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -13,6 +12,7 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.util.EntityUtils;
 
 /**
  * This class is used to wrap the <code>HttpGet</code> class from the
@@ -49,15 +49,8 @@ public class HttpGetWrapper
 		{
 			response = client.execute(get);
 			HttpEntity entity = response.getEntity();
-
-			InputStream stream = entity.getContent();
 			
-			int available = stream.available();
-			String result = "";
-			
-			for (int i = 0; i < available; i++)
-				result += (char)stream.read();
-			return result;
+			return EntityUtils.toString(entity);
 		}
 		catch (ClientProtocolException e)
 		{
