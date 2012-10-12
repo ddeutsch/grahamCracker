@@ -32,6 +32,11 @@ public class TwackerModel
 	private QueryExec sentimentExec;
 	
 	/**
+	 * The executer responsible for getting the live Tweets per second.
+	 */
+	private FrequencyExec frequencyExec;
+	
+	/**
 	 * The constructor for the class.
 	 */
 	public TwackerModel()
@@ -39,6 +44,7 @@ public class TwackerModel
 		this.histogramExec = new HistogramExec();
 		this.heatMapExec = new HeatMapExec();
 		this.sentimentExec = new SentimentExec();
+		this.frequencyExec = new FrequencyExec(1000, 10000);
 	}
 	
 	/**
@@ -51,6 +57,7 @@ public class TwackerModel
 		this.histogramExec.execute(search);
 		this.heatMapExec.execute(search);
 		this.sentimentExec.execute(search);
+		this.frequencyExec.execute(search);
 	}
 	
 	/**
