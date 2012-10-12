@@ -9,7 +9,7 @@ package edu.jhu.twacker.model.query.twitter.tweet;
  * not necessarily mean that it originated from this place. This class follows
  * the JSON format specified by the Twitter Search API. 
  * 
- * The full documentation: {@link https://dev.twitter.com/docs/platform-objects/places}
+ * The full documentation: {@linkplain https://dev.twitter.com/docs/platform-objects/places}
  * 
  * @author Daniel Deutsch
  */

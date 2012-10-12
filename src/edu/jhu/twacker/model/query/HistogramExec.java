@@ -35,6 +35,14 @@ public class HistogramExec implements QueryExec
 		{
 			System.out.println(e);
 		}
-
+	}
+	
+	/**
+	 * Tests the HistogramExec class.
+	 */
+	public static void main(String[] args)
+	{
+		HistogramExec histogram = new HistogramExec();
+		histogram.execute("Obama");
 	}
 }

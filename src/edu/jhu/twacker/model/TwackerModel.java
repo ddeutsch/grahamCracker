@@ -8,7 +8,7 @@ import edu.jhu.twacker.model.query.*;
 
 /**
  * This class represents the model for the logic behind the Twacker web site. It contains
- * three different query executers that each perfrom their own queries to a variety
+ * three different query executers that each perform their own queries to a variety
  * of APIs that interact with Twitter. They are the <code>HistogramExec</code>, the
  * <code>HeatMapExec</code>, and the <code>SentimentExec</code>.
  * 
@@ -53,9 +53,12 @@ public class TwackerModel
 		this.sentimentExec.execute(search);
 	}
 	
+	/**
+	 * Runs the HisogramExec, HeatMapExec, and SentimentExec.
+	 */
 	public static void main(String[] args)
 	{
 		TwackerModel model = new TwackerModel();
-		model.execute("Obama");
+		model.execute("Biden");
 	}
 }

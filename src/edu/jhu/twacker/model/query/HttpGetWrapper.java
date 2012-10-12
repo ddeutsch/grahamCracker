@@ -95,6 +95,13 @@ public class HttpGetWrapper
 		return null;
 	}
 	
+	/**
+	 * Executes the get and returns the entity with has the resulting
+	 * content of the request. The content can be used to get the StreamReader
+	 * to get the text of the result.
+	 * 
+	 * @return The entity with the content of the request.
+	 */
 	private HttpEntity execute()
 	{
 		try
