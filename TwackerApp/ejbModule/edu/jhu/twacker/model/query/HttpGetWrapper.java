@@ -20,7 +20,7 @@ import org.apache.http.util.EntityUtils;
 
 /**
  * This class is used to wrap the <code>HttpGet</code> class from the
- * Apache Http Client library to make http requests easier to manage. 
+ * Apache Http Client library to make http requests easier to manage.
  * 
  * @author Daniel Deutsch
  */
