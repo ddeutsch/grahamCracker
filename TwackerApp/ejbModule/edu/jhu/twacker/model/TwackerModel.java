@@ -78,7 +78,7 @@ public class TwackerModel extends Thread
 	
 	public void createJsonFormat()
 	{
-		this.result = "{ ";
+		this.result = "{ \"search\" : \"" + this.search + "\", ";
 		for (QueryExec executer : this.executers)
 			this.result += executer + ", ";
 		
