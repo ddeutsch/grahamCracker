@@ -6,7 +6,6 @@ package edu.jhu.twacker.model.query;
 
 
 import java.net.URLEncoder;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -31,7 +30,7 @@ import edu.jhu.twacker.model.query.twitter.tweet.Tweet;
  * 
  * @author Daniel Deutsch
  */
-public class SentimentExec implements QueryExec
+public class SentimentExec extends QueryExec
 {
 	/**
 	 * The time that the query will get Tweets from the Streamer before
@@ -40,10 +39,44 @@ public class SentimentExec implements QueryExec
 	private static final long TIME = 10000;
 		
 	/**
-	 * Executes the query to search for the given String.
-	 * @param search The search String.
+	 * The term to search for.
 	 */
-	public void execute(String search)
+	private String search;
+	
+	/**
+	 * The number of positive Tweets.
+	 */
+	private int positive;
+	
+	/**
+	 * The number of neutral Tweets.
+	 */
+	private int neutral;
+	
+	/**
+	 * The number of negative Tweets.
+	 */
+	private int negative;
+	
+	/**
+	 * The total number of Tweets analyzed not including errors.
+	 */
+	private int total;
+	
+	/**
+	 * The number of Tweets that produced an error from the Alchemy API.
+	 */
+	private int errors;
+	
+	public SentimentExec(String search)
+	{
+		this.search = search;
+	}
+	
+	/**
+	 * Executes the query to search for the given String.
+	 */
+	public void run()
 	{
 		String url = "https://stream.twitter.com/1.1/statuses/filter.json?track=" + search;
 		Streamer streamer = new Streamer(url, TIME);
@@ -69,19 +102,20 @@ public class SentimentExec implements QueryExec
 				text.add(tweet.getText());
 		}	
 		
-		System.out.println(analyzeTweets(text));
+		analyzeTweets(text);
 	}
 	
 	/**
-	 * Analyzes a list of Tweets for sentiment using the Alchemy API.
+	 * Analyzes a list of Tweets for sentiment using the Alchemy API and stores
+	 * the counts of positive, neutral, and negative Tweets in their respective data members.
 	 * @param tweets The list of Tweets.
-	 * @return A list of integers in the form of [positives neutrals negatives total]
 	 */
-	private List<Integer> analyzeTweets(List<String> tweets)
+	private void analyzeTweets(List<String> tweets)
 	{
-		int negative = 0;
-		int neutral = 0;
-		int positive = 0;
+		this.negative = 0;
+		this.neutral = 0;
+		this.positive = 0;
+		this.errors = 0;
 		
 		for (String tweet : tweets)
 		{
@@ -89,30 +123,22 @@ public class SentimentExec implements QueryExec
 			switch (result)
 			{
 				case -1:
-					negative++;
+					this.negative++;
 					break;
 				case 0:
-					neutral++;
+					this.neutral++;
 					break;
 				case 1:
-					positive++;
+					this.positive++;
 					break;
 				case -2:
-					System.out.println("-2");
+					this.errors++;
 				default:
 					break;
 			}
-		}
+		}	
 		
-		int total = negative + neutral + positive;
-		
-		List<Integer> counts = new ArrayList<Integer>();
-		counts.add(positive);
-		counts.add(neutral);
-		counts.add(negative);
-		counts.add(total);
-		
-		return counts;
+		this.total = this.positive + this.neutral + this.negative;
 	}
 	
 	/**
@@ -170,11 +196,30 @@ public class SentimentExec implements QueryExec
 	}
 
 	/**
+	 * Creates a JSON representation of the results from this query.
+	 */
+	public String toString()
+	{
+		return "\"sentiment\": { \"positive\" : \"" + this.positive + "\", \"neutral\" : \"" + this.neutral +
+				"\", \"negative\" : \"" + this.negative + "\", \"total\" : \"" + this.total + "\", " +
+				"\"errors\": \"" + this.errors + "\" }";
+	}
+	
+	/**
 	 * Tests the <code>SentimentExec</code> class.
 	 */
 	public static void main(String[] args)
 	{
-		SentimentExec sentiment = new SentimentExec();
-		sentiment.execute("Ryan");
+		SentimentExec sentiment = new SentimentExec("Obama");
+		sentiment.start();
+		try
+		{
+			sentiment.join();
+		}
+		catch (Exception e)
+		{
+			// TODO nothing
+		}
+		System.out.println(sentiment);
 	}
 }

@@ -10,14 +10,35 @@ package edu.jhu.twacker.model.query;
  * 
  * @author Daniel Deutsch
  */
-public class HeatMapExec implements QueryExec
+public class HeatMapExec extends QueryExec
 {
+//	/**
+//	 * The term to search for.
+//	 */
+//	private String search;
+	
+	/**
+	 * The constructor for the class.
+	 * @param search The term to search for.
+	 */
+	public HeatMapExec(String search)
+	{
+//		this.search = search;
+	}
+	
 	/**
 	 * Executes the necessary queries to get the data.
 	 * @param search The term to search for.
 	 */
-	public void execute(String search)
+	public void run()
 	{
-		
+		//
+	}
+
+	@Override
+	public String toString()
+	{
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

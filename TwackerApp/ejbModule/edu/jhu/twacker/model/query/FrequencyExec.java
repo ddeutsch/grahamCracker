@@ -4,6 +4,9 @@
  */
 package edu.jhu.twacker.model.query;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import edu.jhu.twacker.model.query.twitter.Streamer;
 
 
@@ -13,7 +16,7 @@ import edu.jhu.twacker.model.query.twitter.Streamer;
  * 
  * @author Daniel Deutsch
  */
-public class FrequencyExec implements QueryExec
+public class FrequencyExec extends QueryExec
 {
 	/**
 	 * How frequently to check the counts in milliseconds.
@@ -25,8 +28,25 @@ public class FrequencyExec implements QueryExec
 	 */
 	private long duration;
 	
-	public FrequencyExec(long interval, long duration)
+	/**
+	 * The term to search for.
+	 */
+	private String search;
+	
+	/**
+	 * The frequencies per second.
+	 */
+	private List<Integer> frequencies = new LinkedList<Integer>();
+	
+	/**
+	 * The constructor for the class. 
+	 * @param search The term to search for.
+	 * @param interval How many milliseconds apart to check for the new total. 
+	 * @param duration How long to check.
+	 */
+	public FrequencyExec(String search, long interval, long duration)
 	{
+		this.search = search;
 		this.interval = interval;
 		this.duration = duration;
 	}
@@ -34,9 +54,9 @@ public class FrequencyExec implements QueryExec
 	/**
 	 * Executes the query and gets the data.
 	 */
-	public void execute(String search)
+	public void run()
 	{
-		Streamer streamer = new Streamer("https://stream.twitter.com/1.1/statuses/filter.json?track=" + search, this.duration);
+		Streamer streamer = new Streamer("https://stream.twitter.com/1.1/statuses/filter.json?track=" + this.search, this.duration);
 		streamer.start();
 		
 		long start = System.currentTimeMillis();
@@ -52,19 +72,36 @@ public class FrequencyExec implements QueryExec
 			if (endInterval - beginInterval > this.interval)
 			{
 				int count = streamer.getCount();
+				this.frequencies.add(count);
+				
 				streamer.resetCount();
-				
-				System.out.println(count);
-				
 				beginInterval = System.currentTimeMillis();
 			}
 			endInterval = System.currentTimeMillis();
 		}
 	}
+	
+	/**
+	 * Generates a JSON representation of the results of the query.
+	 * @return The string representation.
+	 */
+	public String toString()
+	{
+		return "\"frequency\": " + this.frequencies;
+	}
 
 	public static void main(String[] args)
 	{
-		FrequencyExec frequency = new FrequencyExec(1000, 30000);
-		frequency.execute("Obama");
+		FrequencyExec frequency = new FrequencyExec("Obama", 1000, 10000);
+		frequency.start();
+		try
+		{
+			frequency.join();
+		}
+		catch (InterruptedException e)
+		{
+			e.printStackTrace();
+		}
+		System.out.println(frequency);
 	}
 }

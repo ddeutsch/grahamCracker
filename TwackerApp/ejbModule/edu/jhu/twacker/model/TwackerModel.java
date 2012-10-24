@@ -4,6 +4,9 @@
  */
 package edu.jhu.twacker.model;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import edu.jhu.twacker.model.query.*;
 
 /**
@@ -14,50 +17,92 @@ import edu.jhu.twacker.model.query.*;
  * 
  * @author Daniel Deutsch
  */
-public class TwackerModel
+public class TwackerModel extends Thread
 {
 	/**
-	 * The query executer responsible for getting the histogram data.
+	 * A list of all of the query executers that this class will have.
+	 * For right now, there will be 3: the HistogramExec, the
+	 * SentimentExec, and the FrequencyExec.
 	 */
-	private QueryExec histogramExec;
+	private List<QueryExec> executers;
 	
 	/**
-	 * The query executer responsible for getting the heat map data.
+	 * The term to search for.
 	 */
-	private QueryExec heatMapExec;
+	private String search;
 	
 	/**
-	 * The query executer responsible for getting the sentiment data.
+	 * The result of the queries in JSON format that will be send to the
+	 * Javascript part of the application which will display the data.
+	 * This data member should be retrieved after the thread has been run.
 	 */
-	private QueryExec sentimentExec;
-	
-	/**
-	 * The executer responsible for getting the live Tweets per second.
-	 */
-	private FrequencyExec frequencyExec;
+	private String result;
 	
 	/**
 	 * The constructor for the class.
 	 */
-	public TwackerModel()
+	public TwackerModel(String search)
 	{
-		this.histogramExec = new HistogramExec();
-		this.heatMapExec = new HeatMapExec();
-		this.sentimentExec = new SentimentExec();
-		this.frequencyExec = new FrequencyExec(1000, 10000);
+		this.search = search;
+		this.executers = new LinkedList<QueryExec>();
+		
+		this.executers.add(new HistogramExec(this.search, "86400", "10"));
+		this.executers.add(new SentimentExec(this.search));
+		this.executers.add(new FrequencyExec(this.search, 1000, 10000));
 	}
 	
 	/**
 	 * Executes the query to get all of the data necessary to create the
 	 * graphs to display on the site.
-	 * @param search The string to search for, like "iPad".
 	 */
-	public void execute(String search)
+	public void start()
 	{
-		this.histogramExec.execute(search);
-		this.heatMapExec.execute(search);
-		this.sentimentExec.execute(search);
-		this.frequencyExec.execute(search);
+		for (QueryExec executer : this.executers)
+			executer.start();
+		
+		for (QueryExec executer: this.executers)
+		{
+			try
+			{
+				executer.join();
+			}
+			catch (InterruptedException e)
+			{
+				// TODO Do something about this?
+				e.printStackTrace();
+			}
+		}
+		
+		this.createJsonFormat();
+	}
+	
+	public void createJsonFormat()
+	{
+		this.result = "{ ";
+		for (QueryExec executer : this.executers)
+			this.result += executer + ", ";
+		
+		int index = this.result.lastIndexOf(',');
+		this.result = this.result.substring(0, index);
+		this.result += " }";
+	}
+	
+	/**
+	 * Gets the JSON representation of the result of these queries.
+	 * @return The String representation.
+	 */
+	public String getResult()
+	{
+		return this.result;
+	}
+	
+	/**
+	 * Gets the JSON representation of the result of these queries.
+	 * @return The String representation.
+	 */
+	public String toString()
+	{
+		return this.getResult();
 	}
 	
 	/**
@@ -65,7 +110,16 @@ public class TwackerModel
 	 */
 	public static void main(String[] args)
 	{
-		TwackerModel model = new TwackerModel();
-		model.execute("Biden");
+		TwackerModel model = new TwackerModel("Obama");
+		model.start();
+		try
+		{
+			model.join();
+		}
+		catch (Exception e)
+		{
+			// TODO nothing
+		}
+		System.out.println(model.getResult());
 	}
 }
