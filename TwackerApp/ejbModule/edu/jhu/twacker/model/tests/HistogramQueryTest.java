@@ -1,6 +1,6 @@
 package edu.jhu.twacker.model.tests;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.*; // Disa
 
 import org.junit.Test;
 
