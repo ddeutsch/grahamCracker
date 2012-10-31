@@ -1,6 +1,11 @@
 package edu.jhu.twacker.form;
 
-
+/**
+ * Represents the items typed into a search box and passed to connecting 
+ * data retrievers
+ * @author Disa Mhembere
+ *
+ */
 public class QueryFormBean {
 
 	private String query1;
@@ -15,6 +20,7 @@ public class QueryFormBean {
 
 
 	/**
+	 * Return the string typed in as the 1st search term
 	 * @return the query1
 	 */
 	public String getQuery1() {
@@ -23,6 +29,8 @@ public class QueryFormBean {
 
 
 	/**
+	 * Set the string typed in as the 1st search term
+	 * done by the parsing the form in the JSP
 	 * @param query1 the query1 to set
 	 */
 	public void setQuery1(String query1) {
@@ -31,6 +39,7 @@ public class QueryFormBean {
 
 
 	/**
+	 * Return the string typed in as the 2nd search term
 	 * @return the query2
 	 */
 	public String getQuery2() {
@@ -39,6 +48,8 @@ public class QueryFormBean {
 
 
 	/**
+	 * Set the string typed in as the 2nd search term
+	 * done by the parsing the form in the JSP
 	 * @param query2 the query2 to set
 	 */
 	public void setQuery2(String query2) {
@@ -47,6 +58,7 @@ public class QueryFormBean {
 
 
 	/**
+	 * Return the string typed in as the 3rd search term
 	 * @return the query3
 	 */
 	public String getQuery3() {
@@ -55,6 +67,8 @@ public class QueryFormBean {
 
 
 	/**
+	 * Set the string typed in as the 3rd search term
+	 * done by the parsing the form in the JSP
 	 * @param query3 the query3 to set
 	 */
 	public void setQuery3(String query3) {
