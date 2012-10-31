@@ -66,10 +66,10 @@ public class OtterRequest
 	public String createUrl()
 	{
 		this.url = "http://otter.topsy.com/" + this.resource + "." + this.response_type + "?";
-		
+				
 		for (String param : this.parameters)
 			this.url = this.url + param + "&";
-		
+
 		return this.url.substring(0, this.url.length() - 1);
 	}
 

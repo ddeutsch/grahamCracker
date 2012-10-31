@@ -46,7 +46,7 @@ public class TwackerModel extends Thread
 		this.search = search;
 		this.executers = new LinkedList<QueryExec>();
 		
-		this.executers.add(new HistogramExec(this.search, "86400", "10"));
+		this.executers.add(new HistogramExec(this.search, "60", "100"));
 		this.executers.add(new SentimentExec(this.search));
 		this.executers.add(new FrequencyExec(this.search, 1000, 10000));
 	}
@@ -76,6 +76,9 @@ public class TwackerModel extends Thread
 		this.createJsonFormat();
 	}
 	
+	/**
+	 * Creates the JSON format for the model.
+	 */
 	public void createJsonFormat()
 	{
 		this.result = "{ \"search\" : \"" + this.search + "\", ";

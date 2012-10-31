@@ -86,9 +86,7 @@ public class SentimentExec extends QueryExec
 		long current = System.currentTimeMillis();
 		
 		while (current - start < TIME)
-		{
 			current = System.currentTimeMillis();
-		}
 		
 		List<Tweet> tweets = streamer.getTweets();
 		
@@ -101,7 +99,7 @@ public class SentimentExec extends QueryExec
 			if (tweet.getText() != null)
 				text.add(tweet.getText());
 		}	
-		
+
 		analyzeTweets(text);
 	}
 	
@@ -110,7 +108,7 @@ public class SentimentExec extends QueryExec
 	 * the counts of positive, neutral, and negative Tweets in their respective data members.
 	 * @param tweets The list of Tweets.
 	 */
-	private void analyzeTweets(List<String> tweets)
+	public void analyzeTweets(List<String> tweets)
 	{
 		this.negative = 0;
 		this.neutral = 0;

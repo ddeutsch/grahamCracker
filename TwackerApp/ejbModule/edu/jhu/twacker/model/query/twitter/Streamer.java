@@ -84,15 +84,53 @@ public class Streamer extends Thread
 			try
 			{	
 				String line = reader.readLine();
-				if (line == null)
-					break;
-				this.tweets.add(gson.fromJson(line, Tweet.class));
+
+				// Check if an error message
+				if (this.isErrorMessage(line) == null)
+				{
+					if (line == null)
+						break;
+					this.tweets.add(gson.fromJson(line, Tweet.class));
+				}
 			}
 			catch (Exception e)
 			{
-				
+				// TODO do something to fix this
 			}
 		}
+	}
+	
+	/**
+	 * Indicates whether or not the response string is an error message
+	 * or not.
+	 * @param string The string to test.
+	 * @return The StreamerError if it is an error, null otherwise.
+	 */
+	private StreamerError isErrorMessage(String string)
+	{
+		if (string.contains("<title>Error"))
+		{
+			int index = string.indexOf("<title>Error");
+			int code = Integer.parseInt(string.substring(index + 13, index + 16));
+			
+			// This is poorly done. I can't figure out how to properly
+			// make the enum work how I want it to.
+			switch (code)
+			{
+				case 401: return StreamerError.UNAUTHORIZED;
+				case 403: return StreamerError.FORBIDDEN;
+				case 404: return StreamerError.UNKNOWN;
+				case 406: return StreamerError.NOT_ACCEPTABLE;
+				case 413: return StreamerError.TOO_LONG;
+				case 416: return StreamerError.RANGE_UNACCEPTABLE;
+				case 420: return StreamerError.RATE_LIMITED;
+				case 500: return StreamerError.SERVER_INTERNAL_ERROR;
+				case 503: return StreamerError.SERVICE_OVERLOADED;
+				default: return null;
+			}
+		}
+		else
+			return null;
 	}
 	
 	/**
