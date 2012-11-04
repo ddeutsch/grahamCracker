@@ -13,8 +13,8 @@ import org.springframework.web.servlet.ModelAndView;
  */
 
 @Controller
-@RequestMapping(value = "/welcome")
-public class WelcomeController
+@RequestMapping(value = "/auth")
+public class IdentifyController
 {
 	
 	/**
@@ -24,7 +24,7 @@ public class WelcomeController
 	@RequestMapping(method = RequestMethod.GET)
 	public ModelAndView get()
 	{
-		ModelAndView model = new ModelAndView("base"); // renders base page
+		ModelAndView model = new ModelAndView("identify"); // renders base page
 		return model;
 	}
 

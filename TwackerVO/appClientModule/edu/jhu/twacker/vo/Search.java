@@ -1,8 +1,11 @@
 /**
- * *EDIT FREELY TO MATCH OUR NEEDS
+ * OOSE Project - Group 4 
+ * Search.java
  */
-
 package edu.jhu.twacker.vo;
+
+import java.sql.Time;
+import java.sql.Date;
 
 import javax.persistence.Basic;
 import javax.persistence.Entity;
@@ -16,13 +19,28 @@ import javax.persistence.Id;
  *
  */
 @Entity
-public class Query
+public class Search
 {
 	@Id
 	@GeneratedValue
 	private int id;
 	@Basic
 	private String value;
+	
+	public Date getDate()
+	{
+		return date;
+	}
+
+	//@Temporal(TemporalType.DATE)
+	@Basic
+	private Date date;
+	
+	@Basic
+	private Time time;	
+	
+	//@Id int id;
+	//@Transient User currentUser;
 	
 	/**
 	 *  Get string containing value of a query 
@@ -60,4 +78,29 @@ public class Query
 	{
 		this.id = id;
 	}
+
+	/**
+	 * @return the time
+	 */
+	public Time getTime()
+	{
+		return time;
+	}
+
+	/**
+	 * @param time the time to set
+	 */
+	public void setTime(Time time)
+	{
+		this.time = time;
+	}
+
+	/**
+	 * @param date the date to set
+	 */
+	public void setDate(Date date)
+	{
+		this.date = date;
+	}
+		
 }

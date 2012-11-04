@@ -26,7 +26,7 @@
                 <property name="packagesToScan" value="edu.jhu.twacker.**.*" />
                 <property name="hibernateProperties">
                         <props>
-                                <prop key="hibernate.hbm2ddl.auto">create</prop>
+                                <prop key="hibernate.hbm2ddl.auto">update</prop> <!-- Changed form create to update -->
                         </props>
                 </property>
         </bean>
