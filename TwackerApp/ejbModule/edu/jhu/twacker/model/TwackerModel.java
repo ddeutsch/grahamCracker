@@ -7,7 +7,10 @@ package edu.jhu.twacker.model;
 import java.util.LinkedList;
 import java.util.List;
 
-import edu.jhu.twacker.model.query.*;
+import edu.jhu.twacker.model.query.FrequencyExec;
+import edu.jhu.twacker.model.query.HistogramExec;
+import edu.jhu.twacker.model.query.QueryExec;
+import edu.jhu.twacker.model.query.SentimentExec;
 
 /**
  * This class represents the model for the logic behind the Twacker web site. It contains
@@ -17,7 +20,7 @@ import edu.jhu.twacker.model.query.*;
  * 
  * @author Daniel Deutsch
  */
-public class TwackerModel extends Thread
+public class TwackerModel implements Runnable
 {
 	/**
 	 * A list of all of the query executers that this class will have.
@@ -25,6 +28,8 @@ public class TwackerModel extends Thread
 	 * SentimentExec, and the FrequencyExec.
 	 */
 	private List<QueryExec> executers;
+	
+	private List<Thread> threads;
 	
 	/**
 	 * The term to search for.
@@ -46,7 +51,7 @@ public class TwackerModel extends Thread
 		this.search = search;
 		this.executers = new LinkedList<QueryExec>();
 		
-		this.executers.add(new HistogramExec(this.search, "60", "100"));
+		this.executers.add(new HistogramExec(this.search, "86400", "10"));
 		this.executers.add(new SentimentExec(this.search));
 		this.executers.add(new FrequencyExec(this.search, 1000, 10000));
 	}
@@ -55,7 +60,7 @@ public class TwackerModel extends Thread
 	 * Executes the query to get all of the data necessary to create the
 	 * graphs to display on the site.
 	 */
-	public void start()
+	public void run()
 	{
 		for (QueryExec executer : this.executers)
 			executer.start();
@@ -114,15 +119,17 @@ public class TwackerModel extends Thread
 	public static void main(String[] args)
 	{
 		TwackerModel model = new TwackerModel("Obama");
-		model.start();
+		Thread thread = new Thread(model);
+		
+		thread.start();
 		try
 		{
-			model.join();
+			thread.join();
 		}
 		catch (Exception e)
 		{
 			// TODO nothing
 		}
-		System.out.println(model.getResult());
+		System.out.println(model.toString());
 	}
 }
