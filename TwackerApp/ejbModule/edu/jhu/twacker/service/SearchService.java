@@ -18,6 +18,6 @@ public interface SearchService
 	public void submitSearch(String s);
 
 	public List<Search> displayAllSearches(); // May need to change type
-	
-	
+
+
 }

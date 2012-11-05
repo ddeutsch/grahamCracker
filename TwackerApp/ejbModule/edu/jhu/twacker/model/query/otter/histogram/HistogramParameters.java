@@ -51,7 +51,7 @@ public class HistogramParameters extends Parameters
 	 */
 	public HistogramParameters()
 	{
-
+		// nothing
 	}
 	
 	/**

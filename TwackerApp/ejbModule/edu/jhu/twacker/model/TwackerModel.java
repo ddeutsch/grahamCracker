@@ -4,10 +4,10 @@
  */
 package edu.jhu.twacker.model;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
-import edu.jhu.twacker.model.query.FrequencyExec;
+import edu.jhu.twacker.model.query.ExpertsExec;
 import edu.jhu.twacker.model.query.HistogramExec;
 import edu.jhu.twacker.model.query.QueryExec;
 import edu.jhu.twacker.model.query.SentimentExec;
@@ -27,9 +27,12 @@ public class TwackerModel implements Runnable
 	 * For right now, there will be 3: the HistogramExec, the
 	 * SentimentExec, and the FrequencyExec.
 	 */
-	private List<QueryExec> executers;
+	private List<QueryExec> executers = new ArrayList<QueryExec>();
 	
-	private List<Thread> threads;
+	/**
+	 * The Thread objects that will run the executers.
+	 */
+	private List<Thread> threads = new ArrayList<Thread>();
 	
 	/**
 	 * The term to search for.
@@ -49,11 +52,10 @@ public class TwackerModel implements Runnable
 	public TwackerModel(String search)
 	{
 		this.search = search;
-		this.executers = new LinkedList<QueryExec>();
 		
 		this.executers.add(new HistogramExec(this.search, "86400", "10"));
 		this.executers.add(new SentimentExec(this.search));
-		this.executers.add(new FrequencyExec(this.search, 1000, 10000));
+		this.executers.add(new ExpertsExec(this.search));
 	}
 	
 	/**
@@ -63,13 +65,17 @@ public class TwackerModel implements Runnable
 	public void run()
 	{
 		for (QueryExec executer : this.executers)
-			executer.start();
+		{
+			Thread thread = new Thread(executer);
+			this.threads.add(thread);
+			thread.start();
+		}
 		
-		for (QueryExec executer: this.executers)
+		for (Thread thread : this.threads)
 		{
 			try
 			{
-				executer.join();
+				thread.join();
 			}
 			catch (InterruptedException e)
 			{
@@ -128,7 +134,7 @@ public class TwackerModel implements Runnable
 		}
 		catch (Exception e)
 		{
-			// TODO nothing
+			// nothing
 		}
 		System.out.println(model.toString());
 	}
