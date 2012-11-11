@@ -4,13 +4,8 @@
  */
 package edu.jhu.twacker.vo;
 
-import java.sql.Time;
 import java.sql.Date;
-
-import javax.persistence.Basic;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import java.sql.Time;
 
 /**
  * Class to hold the representation of

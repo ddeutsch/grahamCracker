@@ -100,32 +100,6 @@ public class SentimentExec extends QueryExec
 		
 		return text;
 	}
-//	private List<String> getTweets()
-//	{
-//		String url = "https://stream.twitter.com/1.1/statuses/filter.json?track=" + search;
-//		Streamer streamer = new Streamer(url, TIME);
-//		streamer.start();
-//		
-//		long start = System.currentTimeMillis();
-//		long current = System.currentTimeMillis();
-//		
-//		while (current - start < TIME)
-//			current = System.currentTimeMillis();
-//		
-//		List<Tweet> tweets = streamer.getTweets();
-//				
-//		List<String> text = new LinkedList<String>();
-//		
-//		// For some reason, I am unable to call getSentiment from inside of
-//		// this for loop without getting a ConcurrentModificationException
-//		for (Tweet tweet : tweets)
-//		{
-//			if (tweet.getText() != null)
-//				text.add(tweet.getText());
-//		}
-//		
-//		return text;
-//	}
 	
 	/**
 	 * Analyzes a list of Tweets for sentiment using the Alchemy API and stores
