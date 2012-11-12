@@ -33,24 +33,24 @@ public class SearchServiceImpl implements SearchService
 		Date today = new Date(System.currentTimeMillis()); // Current date
 		searchObj.setDate(today); // set the current date 
 		searchObj.setTime(new Time(today.getTime())); // set the time
-
+		
 		//searchObj.setDate(today); // set the current date
 		//searchObj.setTime(new Time(today.getTime())); // set the time
-
-		this.searchRepository.saveSessQuery(searchObj);
-
+		
+		this.searchRepository.saveSessSearch(searchObj);
+		
 		// *** Sanity Checks **** //
 		System.out.println("The search term: " + s);
-
-		List<Search> allSearches = this.searchRepository.getSessQueries();
+		
+		List<Search> allSearches = this.searchRepository.getAllSearches();
 		System.out.println("Printing all Searches: ");
 		for (Search searchTerm : allSearches){
 			System.out.println("Search term: " + searchTerm.getValue() + ", ID: " + ((Integer)searchTerm.getId()).toString()
 			 + ", Date: " + searchTerm.getDate().toString() + ", Time:" + searchTerm.getTime().toString()) ;
 		}
-
+		
 		// *** Sanity Checks **** //
-
+		
 	}
 
 	@Transactional
@@ -60,6 +60,6 @@ public class SearchServiceImpl implements SearchService
 		return null;
 	}
 
-
-
+	
+	
 }

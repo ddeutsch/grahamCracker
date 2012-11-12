@@ -12,10 +12,12 @@ import edu.jhu.twacker.vo.Search;
 
 public interface SearchRepository
 {
-	public void saveSessQuery(Search s);
+	public void saveSessSearch(Search s);
 
-	public List<Search> getSessQueries();
+	public List<Search> getAllSearches();
 	
-	public List<Search> daysQueries(int userID, Date d);
+	public List<Search> daysSearches(int userID, Date d);
+	
+	public Search getLastSearch();
 
 }

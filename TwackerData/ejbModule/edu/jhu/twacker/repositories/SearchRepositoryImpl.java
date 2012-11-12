@@ -7,6 +7,7 @@ package edu.jhu.twacker.repositories;
 import java.util.Date;
 import java.util.List;
 
+import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -26,7 +27,7 @@ public class SearchRepositoryImpl implements SearchRepository
 	 * Save the queries issued in the current session
 	 */
 	@Override
-	public void saveSessQuery(Search s)
+	public void saveSessSearch(Search s)
 	{
 		this.sessionFactory.getCurrentSession().saveOrUpdate(s);
 	}
@@ -38,12 +39,11 @@ public class SearchRepositoryImpl implements SearchRepository
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Search> getSessQueries()
+	public List<Search> getAllSearches()
 	{
 		List<Search> allSearches = this.sessionFactory.getCurrentSession().createQuery("from Search").list();
 		return allSearches;
 	}
-	
 	
 	/**
 	 * Get all the searched terms for the date in question
@@ -53,7 +53,7 @@ public class SearchRepositoryImpl implements SearchRepository
 	 */
 	@SuppressWarnings("unused")
 	@Override
-	public List<Search> daysQueries(int userID, Date date)
+	public List<Search> daysSearches(int userID, Date date)
 	{
 		
 		String hqlQuery = "SELECT Q.value FROM Search Q WHERE Q.date = :date AND Q.uid = :userID";
@@ -62,6 +62,13 @@ public class SearchRepositoryImpl implements SearchRepository
 		.setParameter("date", date)
 		.setParameter("userID", userID)
 		.list();
+		return null;
+	}
+
+	@Override
+	public Search getLastSearch()
+	{
+		// TODO Auto-generated method stub
 		return null;
 	}
 
