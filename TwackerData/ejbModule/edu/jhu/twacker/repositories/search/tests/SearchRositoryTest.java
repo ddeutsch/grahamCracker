@@ -33,6 +33,9 @@ public class SearchRositoryTest
 	private SessionFactory sessionFactory;
 	private Session session = null;
 
+	/**
+	 * Initialize the database and prepare the Search table
+	 */
 	@Before
 	public void before()
 	{
@@ -51,6 +54,10 @@ public class SearchRositoryTest
 		session = sessionFactory.openSession();
 	}
 
+	/**
+	 * The test module that runs the test to be 
+	 * evaluated
+	 */
 	@Test
 	public void test()
 	{
@@ -76,6 +83,10 @@ public class SearchRositoryTest
 		assertNotSame("Returned search date not equal to expected", testResultSearch.getDate(), search.getDate());
 	}
 	
+	/**
+	 * Close the database connection to 
+	 * finish the test
+	 */
 	@After
 	public void after()
 	{

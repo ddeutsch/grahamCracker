@@ -25,6 +25,10 @@ public class SearchServiceImpl implements SearchService
 	@Autowired
 	private SearchRepository searchRepository;
 
+	/**
+	 * Submit a search to the service
+	 * @param s the search term
+	 */
 	@Transactional
 	public void submitSearch(String s)
 	{
@@ -48,12 +52,13 @@ public class SearchServiceImpl implements SearchService
 			System.out.println("Search term: " + searchTerm.getValue() + ", ID: " + ((Integer)searchTerm.getId()).toString()
 			 + ", Date: " + searchTerm.getDate().toString() + ", Time:" + searchTerm.getTime().toString()) ;
 		}
-		
-		// *** Sanity Checks **** //
-		
 	}
 
 	@Transactional
+	/**
+	 * Display all search terms in the Search table
+	 * @return the list of all Searches submitted
+	 */
 	public List<Search> displayAllSearches()
 	{
 		// TODO Auto-generated method stub
